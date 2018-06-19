@@ -1,5 +1,5 @@
 =begin
-Copyright (c) 2018 Vantiv eCommerce
+Copyright (c) 2017 Vantiv eCommerce
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -22,61 +22,60 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require File.expand_path("../../../lib/CnpOnline",__FILE__)
-require 'test/unit'
+require_relative 'Configuration'
 
+#
+# This class handles sending the Cnp online request
+#
 module CnpOnline
-  class TestSale < Test::Unit::TestCase
 
-    def test_activity_date
-      response= ChargebackRetrieval.new.get_chargebacks_by_date("2018-01-01")
-      assert_match(/\d+/, response.chargebackCase[0].caseId)
-      assert_match(/\d+/, response.transactionId)
+  class ChargebackUpdate
+    def initialize
+      #load configuration data
+      @config_hash = Configuration.new.config
+      @cnp_transaction = CnpTransaction.new
     end
 
-    def test_activity_date_financial_impact
-      response= ChargebackRetrieval.new.get_chargebacks_by_financial_impact("2018-01-01", "true")
-      assert_match(/\d+/, response.chargebackCase[0].caseId)
-      assert_match(/\d+/, response.transactionId)
+    def get_chargebacks_by_date(activity_date, config=@config_hash)
+      return _get_retrieval_response({date: activity_date}, config)
     end
 
-    def test_actionable
-      response= ChargebackRetrieval.new.get_actionable_chargebacks("true")
-      assert_match(/\d+/, response.chargebackCase[0].caseId)
-      assert_match(/\d+/, response.transactionId)
+    def get_chargebacks_by_financial_impact(activity_date, financial_impact, config=@config_hash)
+      return _get_retrieval_response({date: activity_date, financialOnly: financial_impact}, config)
     end
 
-    def test_case_id
-      response= ChargebackRetrieval.new.get_chargeback_by_case_id("1333078000")
-      assert_match(/\d+/, response.chargebackCase.caseId)
-      assert_match(/\d+/, response.transactionId)
-      assert_equal("1333078000", response.chargebackCase.caseId)
+    def get_actionable_chargebacks(actionable, config=@config_hash)
+      return _get_retrieval_response({actionable: actionable}, config)
     end
 
-    def test_token
-      response= ChargebackRetrieval.new.get_chargebacks_by_token("1000000")
-      assert_match(/\d+/, response.chargebackCase[0].caseId)
-      assert_match(/\d+/, response.transactionId)
-      assert_equal("1000000", response.chargebackCase[0].token)
+    def get_chargeback_by_case_id(case_id, config=@config_hash)
+      request_url =  config['url'] + "/" + case_id
+      return Communications.http_get_retrieval_request(request_url, config)
     end
 
-    def test_card_number
-      response= ChargebackRetrieval.new.get_chargebacks_by_card_number("1111000011110000", "0118")
-      assert_match(/\d+/, response.chargebackCase[0].caseId)
-      assert_match(/\d+/, response.transactionId)
-      assert_equal("0000", response.chargebackCase[0].cardNumberLast4)
+    def get_chargebacks_by_token(token, config=@config_hash)
+      return _get_retrieval_response({token: token}, config)
     end
 
-    def test_arn
-      response= ChargebackRetrieval.new.get_chargebacks_by_arn("1111111111")
-      assert_match(/\d+/, response.chargebackCase[0].caseId)
-      assert_match(/\d+/, response.transactionId)
-      assert_equal("1111111111", response.chargebackCase[0].acquirerReferenceNumber)
+    def get_chargebacks_by_card_number(card_number, expiration_date, config=@config_hash)
+      return _get_retrieval_response({cardNumber: card_number, expirationDate: expiration_date}, config)
     end
 
-    def test_get_case_id
-      exception = assert_raise(RuntimeError){ChargebackRetrieval.new.get_chargeback_by_case_id("404")}
-      assert(exception.message =~ /Error with http http_post_request, code:404/)
+    def get_chargebacks_by_arn(arn, config=@config_hash)
+      return _get_retrieval_response({arn: arn}, config)
+    end
+
+
+    def _get_retrieval_response(parameters, config)
+      request_url = config['url']
+      prefix = "?"
+
+      parameters.each_key do |name|
+        request_url += prefix + name.to_s + "=" + parameters[name]
+        prefix = "&"
+      end
+
+      return Communications.http_get_retrieval_request(request_url, config)
     end
 
   end
