@@ -1,1 +1,0 @@
-# cnp-chargeback-sdk-ruby
