@@ -31,51 +31,66 @@ module CnpOnline
 
   class ChargebackUpdate
     def initialize
-      #load configuration data
       @config_hash = Configuration.new.config
-      @cnp_transaction = CnpTransaction.new
     end
 
-    def get_chargebacks_by_date(activity_date, config=@config_hash)
-      return _get_retrieval_response({date: activity_date}, config)
+    def assign_case_to_user(case_id, user_id, note, config=@config_hash)
+      update_request = build_request
+      update_request.activityType = "ASSIGN_TO_USER"
+      update_request.note = note
+      update_request.assignedTo = user_id
+      return _get_update_response(case_id, update_request, config)
     end
 
-    def get_chargebacks_by_financial_impact(activity_date, financial_impact, config=@config_hash)
-      return _get_retrieval_response({date: activity_date, financialOnly: financial_impact}, config)
+    def add_note_to_case(case_id, note, config=@config_hash)
+      update_request = build_request
+      update_request.activityType = "ADD_NOTE"
+      update_request.note = note
+      return _get_update_response(case_id, update_request, config)
     end
 
-    def get_actionable_chargebacks(actionable, config=@config_hash)
-      return _get_retrieval_response({actionable: actionable}, config)
+    def assume_liability(case_id, note, config=@config_hash)
+      update_request = build_request
+      update_request.activityType = "MERCHANT_ACCEPTS_LIABILITY"
+      update_request.note = note
+      return _get_update_response(case_id, update_request, config)
     end
 
-    def get_chargeback_by_case_id(case_id, config=@config_hash)
-      request_url =  config['url'] + "/" + case_id
-      return Communications.http_get_retrieval_request(request_url, config)
+    def represent_case(case_id, note, representment_amount=nil, config=@config_hash)
+      update_request = build_request
+      update_request.activityType = "MERCHANT_REPRESENT"
+      update_request.note = note
+      update_request.representedAmount = representment_amount
+      return _get_update_response(case_id, update_request, config)
     end
 
-    def get_chargebacks_by_token(token, config=@config_hash)
-      return _get_retrieval_response({token: token}, config)
+    def respond_to_retrieval_request(case_id, note, config=@config_hash)
+      update_request = build_request
+      update_request.activityType = "MERCHANT_RESPOND"
+      update_request.note = note
+      return _get_update_response(case_id, update_request, config)
     end
 
-    def get_chargebacks_by_card_number(card_number, expiration_date, config=@config_hash)
-      return _get_retrieval_response({cardNumber: card_number, expirationDate: expiration_date}, config)
+    def request_arbitration(case_id, note, config=@config_hash)
+      update_request = build_request
+      update_request.activityType = "MERCHANT_REQUESTS_ARBITRATION"
+      update_request.note = note
+      return _get_update_response(case_id, update_request, config)
     end
 
-    def get_chargebacks_by_arn(arn, config=@config_hash)
-      return _get_retrieval_response({arn: arn}, config)
+    private
+
+    def build_request()
+      update_request = UpdateRequest.new
+      update_request.xmlns = "http://www.vantivcnp.com/chargebacks"
+      return update_request
     end
 
-
-    def _get_retrieval_response(parameters, config)
-      request_url = config['url']
-      prefix = "?"
-
-      parameters.each_key do |name|
-        request_url += prefix + name.to_s + "=" + parameters[name]
-        prefix = "&"
-      end
-
-      return Communications.http_get_retrieval_request(request_url, config)
+    def _get_update_response(parameter_value1, update_request, config)
+      request_url =  config['url'] + "/" + parameter_value1.to_s
+      request_xml = update_request.save_to_xml.to_s
+      response_xml = Communications.http_put_update_request(request_url, request_xml, config)
+      return XMLObject.new(response_xml)
     end
 
   end

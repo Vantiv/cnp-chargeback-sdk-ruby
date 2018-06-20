@@ -32,6 +32,10 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 module CnpOnline
   class Communications
+
+    CHARGEBACK_API_HEADERS = {'Accept' => 'application/com.vantivcnp.services-v2+xml',
+                               'Content-Type' => 'application/com.vantivcnp.services-v2+xml'}
+
     def self.http_get_retrieval_request(request_url, config_hash)
       proxy_addr = config_hash['proxy_addr']
       proxy_port = config_hash['proxy_port']
@@ -45,42 +49,38 @@ module CnpOnline
         https.ca_file = File.join(File.dirname(__FILE__), "cacert.pem")
       end
       https.start { |http|
-        http_response = http.request_get(url, {})
+        http_response = http.request_get(url, CHARGEBACK_API_HEADERS)
       }
 
       #logger = initialize_logger(config_hash)
       #logger.debug http_response
       check_response(http_response, config_hash)
 
-      return XMLObject.new(http_response.body)
+      return http_response.body
     end
 
-    def self.initialize_logger(config_hash)
-      # Sadly, this needs to be static (the alternative would be to change the CnpXmlMapper.request API
-      # to accept a Configuration instance instead of the config_hash)
-      Configuration.logger ||= default_logger config_hash['printxml'] ? Logger::DEBUG : Logger::INFO
-    end
+    def self.http_put_update_request(request_url, request_xml, config_hash)
+      proxy_addr = config_hash['proxy_addr']
+      proxy_port = config_hash['proxy_port']
+      url = URI.parse(request_url)
 
-    def self.default_logger(level) # :nodoc:
-      logger = Logger.new(STDOUT)
-      logger.level = level
-      # Backward compatible logging format for pre 8.16
-      logger.formatter = proc { |severity, datetime, progname, msg| "#{msg}\n" }
-      logger
-    end
-
-    def self.check_response(http_response, config_hash)
-      if http_response == nil
-        raise("The response is empty, Please call Vantiv eCommerce")
+      http_response = nil
+      https = Net::HTTP.new(url.host, url.port, proxy_addr, proxy_port)
+      if url.scheme == 'https'
+        https.use_ssl = url.scheme=='https'
+        https.verify_mode = OpenSSL::SSL::VERIFY_PEER
+        https.ca_file = File.join(File.dirname(__FILE__), "cacert.pem")
       end
+      https.start { |http|
+        http_response = http.request_put(url, request_xml, CHARGEBACK_API_HEADERS)
+      }
 
-      if http_response.code != "200"
-        raise("Error with http http_post_request, code:" + http_response.header.code)
-      end
+      #logger = initialize_logger(config_hash)
+      #logger.debug http_response
+      check_response(http_response, config_hash)
+
+      return http_response.body
     end
-
-
-
 
 
 
@@ -114,6 +114,31 @@ module CnpOnline
           raise("Error with http http_post_request, code:" + response_xml.header.code)
       end
     end
+
+    def self.check_response(http_response, config_hash)
+      if http_response == nil
+        raise("The response is empty, Please call Vantiv eCommerce")
+      end
+
+      if http_response.code != "200"
+        raise("Error with http http_post_request, code:" + http_response.header.code)
+      end
+    end
+
+    def self.initialize_logger(config_hash)
+      # Sadly, this needs to be static (the alternative would be to change the CnpXmlMapper.request API
+      # to accept a Configuration instance instead of the config_hash)
+      Configuration.logger ||= default_logger config_hash['printxml'] ? Logger::DEBUG : Logger::INFO
+    end
+
+    def self.default_logger(level) # :nodoc:
+      logger = Logger.new(STDOUT)
+      logger.level = level
+      # Backward compatible logging format for pre 8.16
+      logger.formatter = proc { |severity, datetime, progname, msg| "#{msg}\n" }
+      logger
+    end
+
   end
 end
 
