@@ -2316,7 +2316,20 @@ module CnpOnline
     text_node :orderId, "orderId", :default_value=>nil
     text_node :token, "token", :default_value=>nil
   end
-  
+
+
+  class UpdateRequest
+    include XML::Mapping
+    root_element_name "chargebackUpdateRequest"
+    text_node :xmlns, "@xmlns", :default_value=>nil
+    text_node :activityType, "activityType", :default_value=>nil
+    text_node :assignedTo, "assignedTo", :default_value=>nil
+    text_node :note, "note", :default_value=>nil
+    text_node :representedAmount, "representedAmount", :default_value=>nil
+  end
+
+
+
   class OnlineRequest
     include XML::Mapping
     root_element_name "cnpOnlineRequest"

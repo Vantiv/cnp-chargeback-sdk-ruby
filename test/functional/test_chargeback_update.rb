@@ -28,54 +28,43 @@ require 'test/unit'
 module CnpOnline
   class TestChargebackUpdate < Test::Unit::TestCase
 
-    def test_activity_date
-      response= ChargebackRetrieval.new.get_chargebacks_by_date("2018-01-01")
-      assert_match(/\d+/, response.chargebackCase[0].caseId)
+    def test_assign_case_to_user
+      response = ChargebackUpdate.new.assign_case_to_user(10000, "jdeo@company.com", "Test note")
       assert_match(/\d+/, response.transactionId)
     end
 
-    def test_activity_date_financial_impact
-      response= ChargebackRetrieval.new.get_chargebacks_by_financial_impact("2018-01-01", "true")
-      assert_match(/\d+/, response.chargebackCase[0].caseId)
+    def test_add_note_to_case
+      response = ChargebackUpdate.new.add_note_to_case(10000, "Test note")
       assert_match(/\d+/, response.transactionId)
     end
 
-    def test_actionable
-      response= ChargebackRetrieval.new.get_actionable_chargebacks("true")
-      assert_match(/\d+/, response.chargebackCase[0].caseId)
+    def test_assume_liability
+      response = ChargebackUpdate.new.assume_liability(10000, "Test note")
       assert_match(/\d+/, response.transactionId)
     end
 
-    def test_case_id
-      response= ChargebackRetrieval.new.get_chargeback_by_case_id("1333078000")
-      assert_match(/\d+/, response.chargebackCase.caseId)
+    def test_represent_case
+      response = ChargebackUpdate.new.represent_case(10000, "Test note", 12000)
       assert_match(/\d+/, response.transactionId)
-      assert_equal("1333078000", response.chargebackCase.caseId)
     end
 
-    def test_token
-      response= ChargebackRetrieval.new.get_chargebacks_by_token("1000000")
-      assert_match(/\d+/, response.chargebackCase[0].caseId)
+    def test_represent_case_full
+      response = ChargebackUpdate.new.represent_case(10000, "Test note")
       assert_match(/\d+/, response.transactionId)
-      assert_equal("1000000", response.chargebackCase[0].token)
     end
 
-    def test_card_number
-      response= ChargebackRetrieval.new.get_chargebacks_by_card_number("1111000011110000", "0118")
-      assert_match(/\d+/, response.chargebackCase[0].caseId)
+    def respond_to_retrieval_request
+      response = ChargebackUpdate.new.respond_to_retrieval_request(10000, "Test note")
       assert_match(/\d+/, response.transactionId)
-      assert_equal("0000", response.chargebackCase[0].cardNumberLast4)
     end
 
-    def test_arn
-      response= ChargebackRetrieval.new.get_chargebacks_by_arn("1111111111")
-      assert_match(/\d+/, response.chargebackCase[0].caseId)
+    def test_request_arbitration
+      response = ChargebackUpdate.new.request_arbitration(10000, "Test note")
       assert_match(/\d+/, response.transactionId)
-      assert_equal("1111111111", response.chargebackCase[0].acquirerReferenceNumber)
     end
 
-    def test_get_case_id
-      exception = assert_raise(RuntimeError){ChargebackRetrieval.new.get_chargeback_by_case_id("404")}
+    def test_add_not_to_case
+      exception = assert_raise(RuntimeError){ChargebackUpdate.new.add_note_to_case(404, "ErrorResponse")}
       assert(exception.message =~ /Error with http http_post_request, code:404/)
     end
 

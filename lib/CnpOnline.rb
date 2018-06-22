@@ -56,6 +56,7 @@ require_relative 'CnpListeners'
 require_relative 'Configuration'
 
 require_relative 'ChargebackRetrieval'
+require_relative 'ChargebackUpdate'
 
 
 #allows attribute values to be in double quotes, required by Cnp Server

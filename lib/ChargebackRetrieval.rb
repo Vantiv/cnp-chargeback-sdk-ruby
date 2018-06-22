@@ -31,9 +31,7 @@ module CnpOnline
 
   class ChargebackRetrieval
     def initialize
-      #load configuration data
       @config_hash = Configuration.new.config
-      @cnp_transaction = CnpTransaction.new
     end
 
     def get_chargebacks_by_date(activity_date, config=@config_hash)
@@ -49,9 +47,9 @@ module CnpOnline
     end
 
     def get_chargeback_by_case_id(case_id, config=@config_hash)
-      request_url =  config['url'] + "/" + case_id
-      return Communications.http_get_retrieval_request(request_url, config)
+      return _get_retrieval_response({}, config, case_id)
     end
+
 
     def get_chargebacks_by_token(token, config=@config_hash)
       return _get_retrieval_response({token: token}, config)
@@ -65,17 +63,23 @@ module CnpOnline
       return _get_retrieval_response({arn: arn}, config)
     end
 
+    private
 
-    def _get_retrieval_response(parameters, config)
+    def _get_retrieval_response(parameters, config, endpoint=nil)
       request_url = config['url']
       prefix = "?"
+
+      if endpoint
+        request_url += "/" + endpoint
+      end
 
       parameters.each_key do |name|
         request_url += prefix + name.to_s + "=" + parameters[name]
         prefix = "&"
       end
 
-      return Communications.http_get_retrieval_request(request_url, config)
+      response_xml = Communications.http_get_retrieval_request(request_url, config)
+      return XMLObject.new(response_xml)
     end
 
   end

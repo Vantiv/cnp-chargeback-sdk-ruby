@@ -1,5 +1,5 @@
 =begin
-Copyright (c) 2018 Vantiv eCommerce
+Copyright (c) 2017 Vantiv eCommerce
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -22,61 +22,75 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require File.expand_path("../../../lib/CnpOnline",__FILE__)
-require 'test/unit'
+require_relative 'Configuration'
 
+#
+# This class handles sending the Cnp online request
+#
 module CnpOnline
-  class TestSale < Test::Unit::TestCase
 
-    def test_activity_date
-      response= ChargebackRetrieval.new.get_chargebacks_by_date("2018-01-01")
-      assert_match(/\d+/, response.chargebackCase[0].caseId)
-      assert_match(/\d+/, response.transactionId)
+  class ChargebackUpdate
+    def initialize
+      @config_hash = Configuration.new.config
     end
 
-    def test_activity_date_financial_impact
-      response= ChargebackRetrieval.new.get_chargebacks_by_financial_impact("2018-01-01", "true")
-      assert_match(/\d+/, response.chargebackCase[0].caseId)
-      assert_match(/\d+/, response.transactionId)
+    def assign_case_to_user(case_id, user_id, note, config=@config_hash)
+      update_request = build_request
+      update_request.activityType = "ASSIGN_TO_USER"
+      update_request.note = note
+      update_request.assignedTo = user_id
+      return _get_update_response(case_id, update_request, config)
     end
 
-    def test_actionable
-      response= ChargebackRetrieval.new.get_actionable_chargebacks("true")
-      assert_match(/\d+/, response.chargebackCase[0].caseId)
-      assert_match(/\d+/, response.transactionId)
+    def add_note_to_case(case_id, note, config=@config_hash)
+      update_request = build_request
+      update_request.activityType = "ADD_NOTE"
+      update_request.note = note
+      return _get_update_response(case_id, update_request, config)
     end
 
-    def test_case_id
-      response= ChargebackRetrieval.new.get_chargeback_by_case_id("1333078000")
-      assert_match(/\d+/, response.chargebackCase.caseId)
-      assert_match(/\d+/, response.transactionId)
-      assert_equal("1333078000", response.chargebackCase.caseId)
+    def assume_liability(case_id, note, config=@config_hash)
+      update_request = build_request
+      update_request.activityType = "MERCHANT_ACCEPTS_LIABILITY"
+      update_request.note = note
+      return _get_update_response(case_id, update_request, config)
     end
 
-    def test_token
-      response= ChargebackRetrieval.new.get_chargebacks_by_token("1000000")
-      assert_match(/\d+/, response.chargebackCase[0].caseId)
-      assert_match(/\d+/, response.transactionId)
-      assert_equal("1000000", response.chargebackCase[0].token)
+    def represent_case(case_id, note, representment_amount=nil, config=@config_hash)
+      update_request = build_request
+      update_request.activityType = "MERCHANT_REPRESENT"
+      update_request.note = note
+      update_request.representedAmount = representment_amount
+      return _get_update_response(case_id, update_request, config)
     end
 
-    def test_card_number
-      response= ChargebackRetrieval.new.get_chargebacks_by_card_number("1111000011110000", "0118")
-      assert_match(/\d+/, response.chargebackCase[0].caseId)
-      assert_match(/\d+/, response.transactionId)
-      assert_equal("0000", response.chargebackCase[0].cardNumberLast4)
+    def respond_to_retrieval_request(case_id, note, config=@config_hash)
+      update_request = build_request
+      update_request.activityType = "MERCHANT_RESPOND"
+      update_request.note = note
+      return _get_update_response(case_id, update_request, config)
     end
 
-    def test_arn
-      response= ChargebackRetrieval.new.get_chargebacks_by_arn("1111111111")
-      assert_match(/\d+/, response.chargebackCase[0].caseId)
-      assert_match(/\d+/, response.transactionId)
-      assert_equal("1111111111", response.chargebackCase[0].acquirerReferenceNumber)
+    def request_arbitration(case_id, note, config=@config_hash)
+      update_request = build_request
+      update_request.activityType = "MERCHANT_REQUESTS_ARBITRATION"
+      update_request.note = note
+      return _get_update_response(case_id, update_request, config)
     end
 
-    def test_get_case_id
-      exception = assert_raise(RuntimeError){ChargebackRetrieval.new.get_chargeback_by_case_id("404")}
-      assert(exception.message =~ /Error with http http_post_request, code:404/)
+    private
+
+    def build_request()
+      update_request = UpdateRequest.new
+      update_request.xmlns = "http://www.vantivcnp.com/chargebacks"
+      return update_request
+    end
+
+    def _get_update_response(parameter_value1, update_request, config)
+      request_url =  config['url'] + "/" + parameter_value1.to_s
+      request_xml = update_request.save_to_xml.to_s
+      response_xml = Communications.http_put_update_request(request_url, request_xml, config)
+      return XMLObject.new(response_xml)
     end
 
   end
