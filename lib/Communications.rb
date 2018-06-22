@@ -40,22 +40,25 @@ module CnpOnline
       proxy_addr = config_hash['proxy_addr']
       proxy_port = config_hash['proxy_port']
       url = URI.parse(request_url)
-
+      logger = initialize_logger(config_hash)
       http_response = nil
+
       https = Net::HTTP.new(url.host, url.port, proxy_addr, proxy_port)
       if url.scheme == 'https'
         https.use_ssl = url.scheme=='https'
         https.verify_mode = OpenSSL::SSL::VERIFY_PEER
         https.ca_file = File.join(File.dirname(__FILE__), "cacert.pem")
       end
+
+      req = Net::HTTP::Get.new(url, CHARGEBACK_API_HEADERS)
+      req.basic_auth(config_hash['user'], config_hash['password'])
+
       https.start { |http|
-        http_response = http.request_get(url, CHARGEBACK_API_HEADERS)
+        http_response = http.request(req)
       }
 
-      #logger = initialize_logger(config_hash)
-      #logger.debug http_response
+      logger.debug http_response.body
       check_response(http_response, config_hash)
-
       return http_response.body
     end
 
@@ -63,56 +66,29 @@ module CnpOnline
       proxy_addr = config_hash['proxy_addr']
       proxy_port = config_hash['proxy_port']
       url = URI.parse(request_url)
-
+      logger = initialize_logger(config_hash)
       http_response = nil
+
+      logger.debug request_xml
+
       https = Net::HTTP.new(url.host, url.port, proxy_addr, proxy_port)
       if url.scheme == 'https'
         https.use_ssl = url.scheme=='https'
         https.verify_mode = OpenSSL::SSL::VERIFY_PEER
         https.ca_file = File.join(File.dirname(__FILE__), "cacert.pem")
       end
+
+      req = Net::HTTP::Put.new(url, CHARGEBACK_API_HEADERS)
+      req.basic_auth(config_hash['user'], config_hash['password'])
+      req.body = request_xml
+
       https.start { |http|
-        http_response = http.request_put(url, request_xml, CHARGEBACK_API_HEADERS)
+        http_response = http.request(req)
       }
 
-      #logger = initialize_logger(config_hash)
-      #logger.debug http_response
+      logger.debug http_response.body
       check_response(http_response, config_hash)
-
       return http_response.body
-    end
-
-
-
-    ##For http or https post with or without a proxy
-    def Communications.http_post(post_data,config_hash)
-
-      proxy_addr = config_hash['proxy_addr']
-      proxy_port = config_hash['proxy_port']
-      cnp_url = config_hash['url']
-
-      # setup https or http post
-      url = URI.parse(cnp_url)
-
-      response_xml = nil
-      https = Net::HTTP.new(url.host, url.port, proxy_addr, proxy_port)
-      if(url.scheme == 'https')
-        https.use_ssl = url.scheme=='https'
-        https.verify_mode = OpenSSL::SSL::VERIFY_PEER
-        https.ca_file = File.join(File.dirname(__FILE__), "cacert.pem")
-      end
-      https.start { |http|
-        response = http.request_post(url.path, post_data.to_s, {'Content-Type'=>'text/xml; charset=UTF-8','Connection'=>'close'})
-        response_xml = response
-      }
-
-      # validate response, only an HTTP 200 will work, redirects are not followed
-      case response_xml
-        when Net::HTTPOK
-          return response_xml.body
-        else
-          raise("Error with http http_post_request, code:" + response_xml.header.code)
-      end
     end
 
     def self.check_response(http_response, config_hash)
@@ -138,7 +114,6 @@ module CnpOnline
       logger.formatter = proc { |severity, datetime, progname, msg| "#{msg}\n" }
       logger
     end
-
   end
 end
 

@@ -63,6 +63,8 @@ module CnpOnline
       return _get_retrieval_response({arn: arn}, config)
     end
 
+    private
+
     def _get_retrieval_response(parameters, config, endpoint=nil)
       request_url = config['url']
       prefix = "?"
