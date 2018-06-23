@@ -29,54 +29,54 @@ module CnpOnline
   class TestChargebackRetrieval < Test::Unit::TestCase
 
     def test_activity_date
-      response= ChargebackRetrieval.new.get_chargebacks_by_date("2018-01-01")
+      response= ChargebackRetrieval.new.get_chargebacks_by_date(activity_date: "2018-01-01")
       assert_match(/\d+/, response.chargebackCase[0].caseId)
       assert_match(/\d+/, response.transactionId)
     end
 
     def test_activity_date_financial_impact
-      response= ChargebackRetrieval.new.get_chargebacks_by_financial_impact("2018-01-01", "true")
+      response= ChargebackRetrieval.new.get_chargebacks_by_financial_impact(activity_date: "2018-01-01", financial_impact:"true")
       assert_match(/\d+/, response.chargebackCase[0].caseId)
       assert_match(/\d+/, response.transactionId)
     end
 
     def test_actionable
-      response= ChargebackRetrieval.new.get_actionable_chargebacks("true")
+      response= ChargebackRetrieval.new.get_actionable_chargebacks(actionable: "true")
       assert_match(/\d+/, response.chargebackCase[0].caseId)
       assert_match(/\d+/, response.transactionId)
     end
 
     def test_case_id
-      response= ChargebackRetrieval.new.get_chargeback_by_case_id("1333078000")
+      response= ChargebackRetrieval.new.get_chargeback_by_case_id(case_id: "1333078000")
       assert_match(/\d+/, response.chargebackCase.caseId)
       assert_match(/\d+/, response.transactionId)
       assert_equal("1333078000", response.chargebackCase.caseId)
     end
 
     def test_token
-      response= ChargebackRetrieval.new.get_chargebacks_by_token("1000000")
+      response= ChargebackRetrieval.new.get_chargebacks_by_token(token: "1000000")
       assert_match(/\d+/, response.chargebackCase[0].caseId)
       assert_match(/\d+/, response.transactionId)
       assert_equal("1000000", response.chargebackCase[0].token)
     end
 
     def test_card_number
-      response= ChargebackRetrieval.new.get_chargebacks_by_card_number("1111000011110000", "0118")
+      response= ChargebackRetrieval.new.get_chargebacks_by_card_number(card_number: "1111000011110000", expiration_date: "0118")
       assert_match(/\d+/, response.chargebackCase[0].caseId)
       assert_match(/\d+/, response.transactionId)
       assert_equal("0000", response.chargebackCase[0].cardNumberLast4)
     end
 
     def test_arn
-      response= ChargebackRetrieval.new.get_chargebacks_by_arn("1111111111")
+      response= ChargebackRetrieval.new.get_chargebacks_by_arn(arn: "1111111111")
       assert_match(/\d+/, response.chargebackCase[0].caseId)
       assert_match(/\d+/, response.transactionId)
       assert_equal("1111111111", response.chargebackCase[0].acquirerReferenceNumber)
     end
 
     def test_get_case_id
-      exception = assert_raise(RuntimeError){ChargebackRetrieval.new.get_chargeback_by_case_id("404")}
-      assert(exception.message =~ /Error with http http_post_request, code:404/)
+      exception = assert_raise(RuntimeError){ChargebackRetrieval.new.get_chargeback_by_case_id(case_id: "404")}
+      assert_equal("Error with http http_post_request, code:404", exception.message)
     end
 
   end

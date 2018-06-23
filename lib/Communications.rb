@@ -53,6 +53,8 @@ module CnpOnline
       req = Net::HTTP::Get.new(url, CHARGEBACK_API_HEADERS)
       req.basic_auth(config_hash['user'], config_hash['password'])
 
+      logger.debug "GET request to: " + url.to_s + "\n"
+
       https.start { |http|
         http_response = http.request(req)
       }
@@ -69,8 +71,6 @@ module CnpOnline
       logger = initialize_logger(config_hash)
       http_response = nil
 
-      logger.debug request_xml
-
       https = Net::HTTP.new(url.host, url.port, proxy_addr, proxy_port)
       if url.scheme == 'https'
         https.use_ssl = url.scheme=='https'
@@ -81,6 +81,9 @@ module CnpOnline
       req = Net::HTTP::Put.new(url, CHARGEBACK_API_HEADERS)
       req.basic_auth(config_hash['user'], config_hash['password'])
       req.body = request_xml
+
+      logger.debug "PUT request to: " + url.to_s + "\n"
+      logger.debug request_xml + "\n"
 
       https.start { |http|
         http_response = http.request(req)

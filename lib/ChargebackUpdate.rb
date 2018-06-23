@@ -34,7 +34,7 @@ module CnpOnline
       @config_hash = Configuration.new.config
     end
 
-    def assign_case_to_user(case_id, user_id, note, config=@config_hash)
+    def assign_case_to_user(case_id:, user_id:, note:, config: @config_hash)
       update_request = build_request
       update_request.activityType = "ASSIGN_TO_USER"
       update_request.note = note
@@ -42,21 +42,21 @@ module CnpOnline
       return _get_update_response(case_id, update_request, config)
     end
 
-    def add_note_to_case(case_id, note, config=@config_hash)
+    def add_note_to_case(case_id:, note:, config: @config_hash)
       update_request = build_request
       update_request.activityType = "ADD_NOTE"
       update_request.note = note
       return _get_update_response(case_id, update_request, config)
     end
 
-    def assume_liability(case_id, note, config=@config_hash)
+    def assume_liability(case_id:, note:, config: @config_hash)
       update_request = build_request
       update_request.activityType = "MERCHANT_ACCEPTS_LIABILITY"
       update_request.note = note
       return _get_update_response(case_id, update_request, config)
     end
 
-    def represent_case(case_id, note, representment_amount=nil, config=@config_hash)
+    def represent_case(case_id:, note:, representment_amount: nil, config: @config_hash)
       update_request = build_request
       update_request.activityType = "MERCHANT_REPRESENT"
       update_request.note = note
@@ -64,14 +64,14 @@ module CnpOnline
       return _get_update_response(case_id, update_request, config)
     end
 
-    def respond_to_retrieval_request(case_id, note, config=@config_hash)
+    def respond_to_retrieval_request(case_id:, note:, config: @config_hash)
       update_request = build_request
       update_request.activityType = "MERCHANT_RESPOND"
       update_request.note = note
       return _get_update_response(case_id, update_request, config)
     end
 
-    def request_arbitration(case_id, note, config=@config_hash)
+    def request_arbitration(case_id:, note:, config: @config_hash)
       update_request = build_request
       update_request.activityType = "MERCHANT_REQUESTS_ARBITRATION"
       update_request.note = note

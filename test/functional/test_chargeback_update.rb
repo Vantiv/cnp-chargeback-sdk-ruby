@@ -29,44 +29,43 @@ module CnpOnline
   class TestChargebackUpdate < Test::Unit::TestCase
 
     def test_assign_case_to_user
-      response = ChargebackUpdate.new.assign_case_to_user(10000, "jdeo@company.com", "Test note")
+      response = ChargebackUpdate.new.assign_case_to_user(case_id: 10000, user_id: "jdeo@company.com", note: "Test note")
       assert_match(/\d+/, response.transactionId)
     end
 
     def test_add_note_to_case
-      response = ChargebackUpdate.new.add_note_to_case(10000, "Test note")
+      response = ChargebackUpdate.new.add_note_to_case(case_id: 10000, note: "Test note")
       assert_match(/\d+/, response.transactionId)
     end
 
     def test_assume_liability
-      response = ChargebackUpdate.new.assume_liability(10000, "Test note")
+      response = ChargebackUpdate.new.assume_liability(case_id: 10000, note: "Test note")
       assert_match(/\d+/, response.transactionId)
     end
 
     def test_represent_case
-      response = ChargebackUpdate.new.represent_case(10000, "Test note", 12000)
+      response = ChargebackUpdate.new.represent_case(case_id: 10000, note: "Test note", representment_amount: 12000)
       assert_match(/\d+/, response.transactionId)
     end
 
     def test_represent_case_full
-      response = ChargebackUpdate.new.represent_case(10000, "Test note")
+      response = ChargebackUpdate.new.represent_case(case_id: 10000, note: "Test note")
       assert_match(/\d+/, response.transactionId)
     end
 
     def respond_to_retrieval_request
-      response = ChargebackUpdate.new.respond_to_retrieval_request(10000, "Test note")
+      response = ChargebackUpdate.new.respond_to_retrieval_request(case_id: 10000, note: "Test note")
       assert_match(/\d+/, response.transactionId)
     end
 
     def test_request_arbitration
-      response = ChargebackUpdate.new.request_arbitration(10000, "Test note")
+      response = ChargebackUpdate.new.request_arbitration(case_id: 10000, note: "Test note")
       assert_match(/\d+/, response.transactionId)
     end
 
     def test_add_not_to_case
-      exception = assert_raise(RuntimeError){ChargebackUpdate.new.add_note_to_case(404, "ErrorResponse")}
-      assert(exception.message =~ /Error with http http_post_request, code:404/)
+      exception = assert_raise(RuntimeError){ChargebackUpdate.new.add_note_to_case(case_id: 404, note: "ErrorResponse")}
+      assert_equal("Error with http http_post_request, code:404", exception.message)
     end
-
   end
 end

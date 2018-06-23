@@ -34,32 +34,32 @@ module CnpOnline
       @config_hash = Configuration.new.config
     end
 
-    def get_chargebacks_by_date(activity_date, config=@config_hash)
+    def get_chargebacks_by_date(activity_date:, config: @config_hash)
       return _get_retrieval_response({date: activity_date}, config)
     end
 
-    def get_chargebacks_by_financial_impact(activity_date, financial_impact, config=@config_hash)
+    def get_chargebacks_by_financial_impact(activity_date:, financial_impact:, config: @config_hash)
       return _get_retrieval_response({date: activity_date, financialOnly: financial_impact}, config)
     end
 
-    def get_actionable_chargebacks(actionable, config=@config_hash)
+    def get_actionable_chargebacks(actionable:, config: @config_hash)
       return _get_retrieval_response({actionable: actionable}, config)
     end
 
-    def get_chargeback_by_case_id(case_id, config=@config_hash)
+    def get_chargeback_by_case_id(case_id:, config: @config_hash)
       return _get_retrieval_response({}, config, case_id)
     end
 
 
-    def get_chargebacks_by_token(token, config=@config_hash)
+    def get_chargebacks_by_token(token:, config: @config_hash)
       return _get_retrieval_response({token: token}, config)
     end
 
-    def get_chargebacks_by_card_number(card_number, expiration_date, config=@config_hash)
+    def get_chargebacks_by_card_number(card_number:, expiration_date:, config: @config_hash)
       return _get_retrieval_response({cardNumber: card_number, expirationDate: expiration_date}, config)
     end
 
-    def get_chargebacks_by_arn(arn, config=@config_hash)
+    def get_chargebacks_by_arn(arn:, config: @config_hash)
       return _get_retrieval_response({arn: arn}, config)
     end
 
