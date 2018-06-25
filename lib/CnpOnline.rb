@@ -35,6 +35,7 @@ require 'uri'
 require 'net/https'
 require 'xml/mapping'
 require 'iostreams'
+require 'mimemagic'
 
 unless Kernel.respond_to?(:require_relative)
   module Kernel
@@ -57,6 +58,8 @@ require_relative 'Configuration'
 
 require_relative 'ChargebackRetrieval'
 require_relative 'ChargebackUpdate'
+require_relative 'ChargebackDocument'
+
 
 
 #allows attribute values to be in double quotes, required by Cnp Server

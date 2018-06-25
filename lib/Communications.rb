@@ -32,9 +32,154 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 module CnpOnline
   class Communications
-
     CHARGEBACK_API_HEADERS = {'Accept' => 'application/com.vantivcnp.services-v2+xml',
                                'Content-Type' => 'application/com.vantivcnp.services-v2+xml'}
+
+    CB_DOCUMENT_API_HEADERS = {'Content-Type' => 'image/gif'}
+
+    def self.http_get_document_list_request(request_url, config_hash)
+      proxy_addr = config_hash['proxy_addr']
+      proxy_port = config_hash['proxy_port']
+      url = URI.parse(request_url)
+      logger = initialize_logger(config_hash)
+      http_response = nil
+
+      https = Net::HTTP.new(url.host, url.port, proxy_addr, proxy_port)
+      if url.scheme == 'https'
+        https.use_ssl = url.scheme=='https'
+        https.verify_mode = OpenSSL::SSL::VERIFY_PEER
+        https.ca_file = File.join(File.dirname(__FILE__), "cacert.pem")
+      end
+
+      req = Net::HTTP::Get.new(url, CB_DOCUMENT_API_HEADERS)
+      req.basic_auth(config_hash['user'], config_hash['password'])
+
+      logger.debug "Get request to: " + url.to_s + "\n"
+
+      https.start { |http|
+        http_response = http.request(req)
+      }
+
+      logger.debug http_response.body
+      check_response(http_response, config_hash)
+      return http_response.body
+    end
+
+    def self.http_delete_document_request(request_url, config_hash)
+      proxy_addr = config_hash['proxy_addr']
+      proxy_port = config_hash['proxy_port']
+      url = URI.parse(request_url)
+      logger = initialize_logger(config_hash)
+      http_response = nil
+
+      https = Net::HTTP.new(url.host, url.port, proxy_addr, proxy_port)
+      if url.scheme == 'https'
+        https.use_ssl = url.scheme=='https'
+        https.verify_mode = OpenSSL::SSL::VERIFY_PEER
+        https.ca_file = File.join(File.dirname(__FILE__), "cacert.pem")
+      end
+
+      req = Net::HTTP::Delete.new(url)
+      req.basic_auth(config_hash['user'], config_hash['password'])
+
+      logger.debug "Delete request to: " + url.to_s + "\n"
+
+      https.start { |http|
+        http_response = http.request(req)
+      }
+
+      logger.debug http_response.body
+      check_response(http_response, config_hash)
+      return http_response.body
+    end
+
+
+    def self.http_put_document_request(request_url, document_path, config_hash)
+      proxy_addr = config_hash['proxy_addr']
+      proxy_port = config_hash['proxy_port']
+      url = URI.parse(request_url)
+      logger = initialize_logger(config_hash)
+      http_response = nil
+
+      https = Net::HTTP.new(url.host, url.port, proxy_addr, proxy_port)
+      if url.scheme == 'https'
+        https.use_ssl = url.scheme=='https'
+        https.verify_mode = OpenSSL::SSL::VERIFY_PEER
+        https.ca_file = File.join(File.dirname(__FILE__), "cacert.pem")
+      end
+
+      data, content_type = read_document(document_path)
+      req = Net::HTTP::Put.new(url, {'Content-Type' => content_type})
+      req.basic_auth(config_hash['user'], config_hash['password'])
+      req.body = data
+
+      logger.debug "PUT request to: " + url.to_s + "\n"
+
+      https.start { |http|
+        http_response = http.request(req)
+      }
+
+      logger.debug http_response.body
+      check_response(http_response, config_hash)
+      return http_response.body
+    end
+
+    def self.http_post_document_request(request_url, document_path, config_hash)
+      proxy_addr = config_hash['proxy_addr']
+      proxy_port = config_hash['proxy_port']
+      url = URI.parse(request_url)
+      logger = initialize_logger(config_hash)
+      http_response = nil
+
+      https = Net::HTTP.new(url.host, url.port, proxy_addr, proxy_port)
+      if url.scheme == 'https'
+        https.use_ssl = url.scheme=='https'
+        https.verify_mode = OpenSSL::SSL::VERIFY_PEER
+        https.ca_file = File.join(File.dirname(__FILE__), "cacert.pem")
+      end
+
+      data, content_type = read_document(document_path)
+      req = Net::HTTP::Post.new(url, {'Content-Type' => content_type})
+      req.basic_auth(config_hash['user'], config_hash['password'])
+      req.body = data
+
+      logger.debug "POST request to: " + url.to_s + "\n"
+
+      https.start { |http|
+        http_response = http.request(req)
+      }
+
+      logger.debug http_response.body
+      check_response(http_response, config_hash)
+      return http_response.body
+    end
+
+    def self.http_get_document_request(request_url, document_path, config_hash)
+      proxy_addr = config_hash['proxy_addr']
+      proxy_port = config_hash['proxy_port']
+      url = URI.parse(request_url)
+      logger = initialize_logger(config_hash)
+      http_response = nil
+
+      https = Net::HTTP.new(url.host, url.port, proxy_addr, proxy_port)
+      if url.scheme == 'https'
+        https.use_ssl = url.scheme=='https'
+        https.verify_mode = OpenSSL::SSL::VERIFY_PEER
+        https.ca_file = File.join(File.dirname(__FILE__), "cacert.pem")
+      end
+
+      req = Net::HTTP::Get.new(url)
+      req.basic_auth(config_hash['user'], config_hash['password'])
+
+      logger.debug "GET request to: " + url.to_s + "\n"
+
+      https.start { |http|
+        http_response = http.request(req)
+      }
+
+      check_response(http_response, config_hash)
+      write_document(http_response, document_path, config_hash)
+    end
 
     def self.http_get_retrieval_request(request_url, config_hash)
       proxy_addr = config_hash['proxy_addr']
@@ -92,6 +237,33 @@ module CnpOnline
       logger.debug http_response.body
       check_response(http_response, config_hash)
       return http_response.body
+    end
+
+    private
+
+    def self.read_document(document_path)
+      data = nil
+      open(document_path, 'rb') { |f|
+        data = f.read
+      }
+      content_type = nil
+      mimemagic = MimeMagic.by_path(document_path)
+      if mimemagic
+        content_type = mimemagic.type
+      end
+      return data, content_type
+    end
+
+    def self.write_document(http_response, document_path, config_hash)
+      content_type = http_response.content_type
+      if content_type != "image/tiff"
+        raise ("Wrong response content type")
+      end
+    else
+      open(document_path, "wb") do |file|
+        file.write(http_response.body)
+      end
+      puts("\nDocument saved at: ", document_path)
     end
 
     def self.check_response(http_response, config_hash)
