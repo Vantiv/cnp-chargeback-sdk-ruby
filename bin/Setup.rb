@@ -27,8 +27,6 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 # make setup file executable
 
-require 'iostreams'
-
 #
 # Configuration generation for URL and credentials
 #

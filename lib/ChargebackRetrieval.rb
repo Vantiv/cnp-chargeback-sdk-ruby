@@ -50,7 +50,6 @@ module CnpOnline
       return _get_retrieval_response({}, config, case_id)
     end
 
-
     def get_chargebacks_by_token(token:, config: @config_hash)
       return _get_retrieval_response({token: token}, config)
     end

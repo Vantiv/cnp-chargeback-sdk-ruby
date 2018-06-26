@@ -34,7 +34,6 @@ require 'yaml'
 require 'uri'
 require 'net/https'
 require 'xml/mapping'
-require 'iostreams'
 require 'mimemagic'
 
 unless Kernel.respond_to?(:require_relative)
