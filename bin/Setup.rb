@@ -26,6 +26,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 =end
 
 # make setup file executable
+require 'iostreams'
 
 #
 # Configuration generation for URL and credentials
