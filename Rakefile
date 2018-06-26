@@ -39,7 +39,6 @@ spec = Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.required_ruby_version = '>=2.2.0'
   s.files = Dir['**/**']
-  s.executables = ['sample_driver.rb', 'Setup.rb']
   s.test_files = Dir['test/unit/ts_unit.rb']
   s.has_rdoc = true
   s.add_dependency('xml-object')

@@ -9,7 +9,7 @@ This program runs as follows:
    
 ```
 >Setup.rb 
-Welcome to Vantiv eCommerce Ruby_SDK
+Welcome to Vantiv eCommerce Ruby_Chargeback_SDK
 please input your user name:
 test_user
 please input your password:

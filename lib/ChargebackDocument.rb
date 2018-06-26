@@ -63,8 +63,5 @@ module CnpOnline
       response_xml = Communications.http_get_document_list_request(request_url, config)
       return XMLObject.new(response_xml)
     end
-
-
-
   end
 end

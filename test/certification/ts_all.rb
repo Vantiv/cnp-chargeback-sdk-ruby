@@ -26,8 +26,4 @@ require File.expand_path("../../../lib/CnpOnline",__FILE__)
 
 
 #test driver for running all tests
-require_relative 'certTest1_base'
-require_relative 'certTest2_authenhanced'
-require_relative 'certTest3_authreversal'
-require_relative 'certTest4_echeck'
-require_relative 'certTest5_token'
+require_relative 'certTest'

@@ -45,13 +45,8 @@ class Setup
       puts 'Please input your merchantId:'
       f.puts 'merchantID: ' + gets
       puts "Please choose Vantiv eCommerce url from the following list (example: 'prelive') or directly input another URL:
-sandbox => https://www.testvantivcnp.com/spring/chargebacks
-prelive => https://payments.vantivprelive.com/vap/communicator/online
-postlive => https://payments.vantivpostlive.com/vap/communicator/online
-production => https://payments.vantivcnp.com/vap/communicator/online
-transact_prelive => https://transact.vantivprelive.com/vap/communicator/online
-transact_postlive => https://transact.vantivpostlive.com/vap/communicator/online
-transact_production => https://transact.vantivcnp.com/vap/communicator/online"
+sandbox => https://www.testvantivcnp.com/services/chargebacks
+prelive => https://payments.vantivprelive.com/services/chargebacks"
       f.puts 'url: ' + Setup.choice(gets)
       puts 'Please input the proxy address, if no proxy hit enter key: '
       f.puts 'proxy_addr: ' + gets
@@ -68,23 +63,12 @@ transact_production => https://transact.vantivcnp.com/vap/communicator/online"
   end
 
   def Setup.choice(cnp_env)
-    cnp_online_ctx = 'vap/communicator/online'
     if cnp_env == "sandbox\n"
-      return 'https://www.testvantivcnp.com/spring/chargebacks'
+      return 'https://www.testvantivcnp.com/spring/services/chargebacks'
     elsif cnp_env == "prelive\n"
-      return 'https://payments.vantivprelive.com/' + cnp_online_ctx
-    elsif cnp_env == "postlive\n"
-      return 'https://payments.vantivpostlive.com/' + cnp_online_ctx
-    elsif cnp_env == "production\n"
-      return 'https://payments.vantivcnp.com/' + cnp_online_ctx
-    elsif cnp_env == "transact_production\n"
-      return 'https://transact.vantivcnp.com/' + cnp_online_ctx
-    elsif cnp_env == "transact_prelive\n"
-      return 'https://transact.vantivprelive.com/' + cnp_online_ctx
-    elsif cnp_env == "transact_postlive\n"
-      return 'https://transact.vantivpostlive.com/' + cnp_online_ctx
+      return 'https://payments.vantivprelive.com/services/chargebacks'
     else
-      return 'https://www.testvantivcnp.com/sandbox/communicator/online'
+      return 'https://www.testvantivcnp.com/spring/chargebacks'
     end
   end
 end

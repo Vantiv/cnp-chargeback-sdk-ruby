@@ -45,21 +45,12 @@ unless Kernel.respond_to?(:require_relative)
   end
 end
 
-
 require_relative 'Communications'
-require_relative 'CnpXmlMapper'
 require_relative 'XMLFields'
-require_relative 'CnpTransaction'
-require_relative 'CnpBatchRequest'
-require_relative 'CnpOnlineRequest'
-require_relative 'CnpRequest'
-require_relative 'CnpListeners'
 require_relative 'Configuration'
-
 require_relative 'ChargebackRetrieval'
 require_relative 'ChargebackUpdate'
 require_relative 'ChargebackDocument'
-
 
 
 #allows attribute values to be in double quotes, required by Cnp Server
