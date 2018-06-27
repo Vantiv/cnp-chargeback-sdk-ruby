@@ -82,7 +82,7 @@ module CnpOnline
       req = Net::HTTP::Delete.new(url)
       req.basic_auth(config_hash['user'], config_hash['password'])
 
-      logger.debug "Delete request to: " + url.to_s + "\n"
+      logger.debug "DELETE request to: " + url.to_s + "\n"
 
       https.start { |http|
         http_response = http.request(req)
@@ -195,7 +195,7 @@ module CnpOnline
         https.ca_file = File.join(File.dirname(__FILE__), "cacert.pem")
       end
 
-      req = Net::HTTP::Get.new(url.to_s, CHARGEBACK_API_HEADERS)
+      req = Net::HTTP::Get.new(url, CHARGEBACK_API_HEADERS)
       req.basic_auth(config_hash['user'], config_hash['password'])
 
       logger.debug "GET request to: " + url.to_s + "\n"
@@ -272,7 +272,8 @@ module CnpOnline
       end
 
       if http_response.code != "200"
-        raise("Error with http http_post_request, code:" + http_response.header.code)
+        puts("\nResponse :" + http_response.body)
+        raise("Error with http response, code:" + http_response.header.code)
       end
     end
 
