@@ -79,8 +79,8 @@ end
 #
 
 # make the config.yml file in the CNP_CONFIG_DIR directory or HOME directory
-if !(ENV['CNP_CONFIG_DIR'].nil?)
-  path = ENV['CNP_CONFIG_DIR']
+if !(ENV['CNP_CB_CONFIG_DIR'].nil?)
+  path = ENV['CNP_CB_CONFIG_DIR']
 else
   path = ENV['HOME']
 end
