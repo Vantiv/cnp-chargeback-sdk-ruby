@@ -76,7 +76,7 @@ module CnpOnline
 
     def test_get_case_id
       exception = assert_raise(RuntimeError){ChargebackRetrieval.new.get_chargeback_by_case_id(case_id: "404")}
-      assert_equal("Error with http http_post_request, code:404", exception.message)
+      assert_equal("Error with http response, code:404", exception.message)
     end
 
   end

@@ -65,7 +65,7 @@ module CnpOnline
 
     def test_add_not_to_case
       exception = assert_raise(RuntimeError){ChargebackUpdate.new.add_note_to_case(case_id: 404, note: "ErrorResponse")}
-      assert_equal("Error with http http_post_request, code:404", exception.message)
+      assert_equal("Error with http response, code:404", exception.message)
     end
   end
 end
