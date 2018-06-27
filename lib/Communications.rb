@@ -195,7 +195,7 @@ module CnpOnline
         https.ca_file = File.join(File.dirname(__FILE__), "cacert.pem")
       end
 
-      req = Net::HTTP::Get.new(url, CHARGEBACK_API_HEADERS)
+      req = Net::HTTP::Get.new(url.to_s, CHARGEBACK_API_HEADERS)
       req.basic_auth(config_hash['user'], config_hash['password'])
 
       logger.debug "GET request to: " + url.to_s + "\n"
