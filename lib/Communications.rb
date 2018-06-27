@@ -272,7 +272,7 @@ module CnpOnline
       end
 
       if http_response.code != "200"
-        puts("\nResponse :" + http_response.body)
+        puts("Error Response : \n" + http_response.body)
         raise("Error with http response, code:" + http_response.header.code)
       end
     end
