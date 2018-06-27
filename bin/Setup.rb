@@ -75,10 +75,10 @@ end
 #
 #
 # Optionally enable the configuration to reside in a custom location
-# if the $CNP_CONFIG_DIR directory is set
+# if the $CNP_CB_CONFIG_DIR directory is set
 #
 
-# make the config.yml file in the CNP_CONFIG_DIR directory or HOME directory
+# make the config.yml file in the CNP_CB_CONFIG_DIR directory or HOME directory
 if !(ENV['CNP_CB_CONFIG_DIR'].nil?)
   path = ENV['CNP_CB_CONFIG_DIR']
 else

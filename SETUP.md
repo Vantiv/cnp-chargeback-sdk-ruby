@@ -36,7 +36,7 @@ You may change the configuration values at anytime by running Setup.rb again, or
 
 Changing the location of the Cnp configuration file:
 ------------------------------------------------------
-NOTICE you can set the environment variable $CNP_CONFIG_DIR to locate your configuration file in a location other than the $HOME Directory, the the file will reside in $CNP_CONFIG_DIR/.cnp_SDK_config.yml  
+NOTICE you can set the environment variable $CNP_CB_CONFIG_DIR to locate your configuration file in a location other than the $HOME Directory, the the file will reside in $CNP_CB_CONFIG_DIR/.cnp_chargeback_config.yml  
 
 Sample configuration file contents
 ----------------------------------

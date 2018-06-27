@@ -35,8 +35,8 @@ module CnpOnline
     end
 
     def config
-      if !ENV['CNP_CONFIG_DIR'].nil?
-        config_file = ENV['CNP_CONFIG_DIR'] + '/.cnp_chargeback_config.yml'
+      if !ENV['CNP_CB_CONFIG_DIR'].nil?
+        config_file = ENV['CNP_CB_CONFIG_DIR'] + '/.cnp_chargeback_config.yml'
       else
         config_file = ENV['HOME'] + '/.cnp_chargeback_config.yml'
       end
