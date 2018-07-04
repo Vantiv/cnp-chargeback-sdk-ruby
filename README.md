@@ -54,7 +54,7 @@ response = ChargebackUpdate.new.assign_case_to_user(case_id: 10000, user_id: "jd
  
 # Upload document
 response = ChargebackDocument.new.upload_document(case_id: "10000", document_path: "invoice.pdf")
-responseCode = response.responseCode
+response_code = response.responseCode
 
 # Retrieve a list of documents by case id
 response = ChargebackDocument.new.list_documents(case_id: "10000")
