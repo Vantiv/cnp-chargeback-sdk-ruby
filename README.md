@@ -33,8 +33,8 @@ $HOME/.cnp_chargeback_config.yml
 3) Example usage: 
 
 ```ruby
-require 'CnpOnline'
-include CnpOnline
+require 'CnpChargeback'
+include CnpChargeback
 
 # Retrieving information about a chargeback by caseId:
 response = ChargebackRetrieval.new.get_chargeback_by_case_id(case_id: "123")
