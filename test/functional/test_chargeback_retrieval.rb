@@ -22,7 +22,7 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 =end
-require File.expand_path("../../../lib/CnpOnline",__FILE__)
+require File.expand_path("../../../lib/CnpChargeback", __FILE__)
 require 'test/unit'
 
 module CnpOnline
@@ -30,19 +30,19 @@ module CnpOnline
 
     def test_activity_date
       response= ChargebackRetrieval.new.get_chargebacks_by_date(activity_date: "2018-01-01")
-      assert_match(/\d+/, response.chargebackCase[0].caseId)
+      assert_match(/\d+/, response.chargebackCase.caseId)
       assert_match(/\d+/, response.transactionId)
     end
 
     def test_activity_date_financial_impact
       response= ChargebackRetrieval.new.get_chargebacks_by_financial_impact(activity_date: "2018-01-01", financial_impact:"true")
-      assert_match(/\d+/, response.chargebackCase[0].caseId)
+      assert_match(/\d+/, response.chargebackCase.caseId)
       assert_match(/\d+/, response.transactionId)
     end
 
     def test_actionable
       response= ChargebackRetrieval.new.get_actionable_chargebacks(actionable: "true")
-      assert_match(/\d+/, response.chargebackCase[0].caseId)
+      assert_match(/\d+/, response.chargebackCase.caseId)
       assert_match(/\d+/, response.transactionId)
     end
 
@@ -55,23 +55,23 @@ module CnpOnline
 
     def test_token
       response= ChargebackRetrieval.new.get_chargebacks_by_token(token: "1000000")
-      assert_match(/\d+/, response.chargebackCase[0].caseId)
+      assert_match(/\d+/, response.chargebackCase.caseId)
       assert_match(/\d+/, response.transactionId)
-      assert_equal("1000000", response.chargebackCase[0].token)
+      assert_equal("1000000", response.chargebackCase.token)
     end
 
     def test_card_number
       response= ChargebackRetrieval.new.get_chargebacks_by_card_number(card_number: "1111000011110000", expiration_date: "0118")
-      assert_match(/\d+/, response.chargebackCase[0].caseId)
+      assert_match(/\d+/, response.chargebackCase.caseId)
       assert_match(/\d+/, response.transactionId)
-      assert_equal("0000", response.chargebackCase[0].cardNumberLast4)
+      assert_equal("0000", response.chargebackCase.cardNumberLast4)
     end
 
     def test_arn
       response= ChargebackRetrieval.new.get_chargebacks_by_arn(arn: "1111111111")
-      assert_match(/\d+/, response.chargebackCase[0].caseId)
+      assert_match(/\d+/, response.chargebackCase.caseId)
       assert_match(/\d+/, response.transactionId)
-      assert_equal("1111111111", response.chargebackCase[0].acquirerReferenceNumber)
+      assert_equal("1111111111", response.chargebackCase.acquirerReferenceNumber)
     end
 
     def test_get_case_id

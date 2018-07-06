@@ -1,4 +1,4 @@
-require File.expand_path("../../../lib/CnpOnline",__FILE__)
+require File.expand_path("../../../lib/CnpChargeback", __FILE__)
 #require 'Cnp_activemerchant'
 require 'test/unit'
 
