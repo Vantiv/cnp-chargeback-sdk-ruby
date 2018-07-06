@@ -9,12 +9,13 @@ About this SDK
 --------------
 The Vantiv eCommerce Ruby Chargeback SDK is a Ruby implementation of the [Vantiv eCommerce](https://developer.vantiv.com/community/ecommerce) Chargeback API. This SDK was created to make it as easy as possible to manage your chargebacks using Vantiv eCommerce API. This SDK utilizes the HTTPS protocol to securely connect to Vantiv eCommerce. Using the SDK requires coordination with the Vantiv eCommerce team in order to be provided with credentials for accessing our systems.
 
-Each Ruby SDK release supports all of the functionality present in the associated Vantiv eCommerce Chargeback API version (e.g., SDK v2.1.0 supports Vantiv eCommerce Chargeback API v2.1). Please see the Chargeback API reference guide to get more details on what the Vantiv eCommerce chargeback engine supports.
+Each Ruby Chargeback SDK release supports all of the functionality present in the associated Vantiv eCommerce Chargeback API version (e.g., SDK v2.1.0 supports Vantiv eCommerce Chargeback API v2.1). Please see the Chargeback API reference guide to get more details on what the Vantiv eCommerce chargeback engine supports.
 
 See LICENSE file for details on using this software.
 
-Please contact [Vantiv eCommerce](https://developer.vantiv.com/community/ecommerce) to receive valid merchant credentials in order to run tests successfully or if you require assistance in any way.  We are reachable at sdksupport@Vantiv.com
+Source Code available from : [https://github.com/Vantiv/cnp-sdk-for-ruby](https://github.com/Vantiv/cnp-chargeback-sdk-ruby)
 
+Please contact [Vantiv eCommerce](https://developer.vantiv.com/community/ecommerce) to receive valid merchant credentials in order to run tests successfully or if you require assistance in any way.  We are reachable at sdksupport@Vantiv.com
 
 
 Setup
@@ -29,6 +30,8 @@ Note: If you get errors, you might have to configure your proxy.
 
 2) Once the gem is installed run our setup program to generate a configuration file.  The configuration file resides in your home directory
 $HOME/.cnp_chargeback_config.yml
+
+For more details on setup see our instructions [here](https://github.com/Vantiv/cnp-sdk-for-ruby/blob/12.X/SETUP.md)
 
 3) Example usage: 
 
