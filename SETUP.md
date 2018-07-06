@@ -1,4 +1,4 @@
-Setting up and Configuring the Vantiv eCommerce SDK
+Setting up and Configuring the Vantiv eCommerce Chargeback SDK
 =========================================
 
 Running the built in configuration file generator
