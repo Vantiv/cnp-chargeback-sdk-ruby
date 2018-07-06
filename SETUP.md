@@ -15,13 +15,8 @@ test_user
 please input your password:
 test_password
 Please choose Vantiv eCommerce url from the following list (example: 'prelive') or directly input another URL:
-sandbox => hhttps://www.testvantivcnp.com/sandbox/new/sandbox/communicator/online
-prelive => https://payments.vantivprelive.com/vap/communicator/online
-postlive => https://payments.vantivpostlive.com/vap/communicator/online
-production => https://payments.vantivcnp.com/vap/communicator/online
-transact_prelive => https://transact.vantivprelive.com/vap/communicator/online
-transact_postlive => https://transact.vantivpostlive.com/vap/communicator/online
-transact_production => https://transact.vantivcnp.com/vap/communicator/online
+sandbox => https://www.testvantivcnp.com/services/chargebacks
+prelive => https://payments.vantivprelive.com/services/chargebacks
 sandbox
 Please input the proxy address, if no proxy hit enter key: 
 
