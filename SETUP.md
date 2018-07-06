@@ -3,7 +3,7 @@ Setting up and Configuring the Vantiv eCommerce SDK
 
 Running the built in configuration file generator
 -------------------------------------------------
-The Ruby SDK ships with a built in program which can be used to generate your specific configuration.
+The Ruby Chargeback SDK ships with a built in program which can be used to generate your specific configuration.
 
 This program runs as follows:
    
@@ -22,7 +22,7 @@ Please input the proxy address, if no proxy hit enter key:
 
 Please input the proxy port, if no proxy hit enter key: 
 
-The Vantiv eCommerce configuration file has been generated, the file is located at: /<your-home-directory>/.cnp_SDK_config.yml 
+The Vantiv eCommerce configuration file has been generated, the file is located at: /<your-home-directory>/.cnp_chargeback_config.yml 
 ```
 
 Modifying your configuration
@@ -38,7 +38,7 @@ Sample configuration file contents
 ```
 user: test_user
 password: test_password
-url: https://www.testcnp.com/vap/communicator/online
+url: https://www.testvantivcnp.com/services/chargebacks
 proxy_addr: yourproxyserver
 proxy_port: 8080
 ```
