@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Vantiv eCommerce.
+# Copyright (c) 2018 Vantiv eCommerce.
 #
 # Permission is hereby granted, free of charge, to any person
 # obtaining a copy of this software and associated documentation
@@ -27,8 +27,8 @@ require 'rake/clean'
 
 spec = Gem::Specification.new do |s|
   FileUtils.rm_rf('pkg')
-  s.name = 'CnpOnline'
-  s.summary = 'Ruby SDK produced by Vantiv eCommerce for transaction processing using Vantiv eCommerce XML format v12.3'
+  s.name = 'CnpChargeback'
+  s.summary = 'Ruby Chargeback SDK produced by Vantiv eCommerce for chargeback processing using Vantiv eCommerce XML format v12.3'
   s.description = File.read(File.join(File.dirname(__FILE__), 'DESCRIPTION'))
   s.requirements =
     ['Contact sdksupport@vantiv.com for more information']
