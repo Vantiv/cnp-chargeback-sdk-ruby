@@ -30,7 +30,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 # URL and proxy server settings are derived from the configuration file
 #
 
-module CnpOnline
+module CnpChargeback
   class Communications
     CHARGEBACK_API_HEADERS = {'Accept' => 'application/com.vantivcnp.services-v2+xml',
                                'Content-Type' => 'application/com.vantivcnp.services-v2+xml'}

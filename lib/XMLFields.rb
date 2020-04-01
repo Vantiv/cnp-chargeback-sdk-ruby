@@ -23,7 +23,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 # Contains all of the underlying XML fields and specifications needed to create the transaction set
 #
 
-module CnpOnline
+module CnpChargeback
   class UpdateRequest
     include XML::Mapping
     root_element_name "chargebackUpdateRequest"

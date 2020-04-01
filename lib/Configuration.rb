@@ -27,7 +27,7 @@ require_relative 'EnvironmentVariables'
 #
 # Loads the configuration from a file
 #
-module CnpOnline
+module CnpChargeback
   class Configuration
     class << self
       # External logger, if specified

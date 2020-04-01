@@ -27,7 +27,7 @@ require_relative 'Configuration'
 #
 # This class handles sending the Cnp online request
 #
-module CnpOnline
+module CnpChargeback
 
   class ChargebackUpdate
     def initialize

@@ -1,4 +1,4 @@
-module CnpOnline
+module CnpChargeback
   class EnvironmentVariables
     def initialize
       # load configuration data

@@ -25,7 +25,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 require File.expand_path("../../../lib/CnpChargeback", __FILE__)
 require 'test/unit'
 
-module CnpOnline
+module CnpChargeback
   class TestChargebackRetrieval < Test::Unit::TestCase
 
     def test_activity_date
