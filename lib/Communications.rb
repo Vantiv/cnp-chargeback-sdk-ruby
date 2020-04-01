@@ -43,11 +43,12 @@ module CnpOnline
       url = URI.parse(request_url)
       logger = initialize_logger(config_hash)
       http_response = nil
+      ssl_verify_mode = config_hash['ssl_verify_mode'] || OpenSSL::SSL::VERIFY_PEER
 
       https = Net::HTTP.new(url.host, url.port, proxy_addr, proxy_port)
       if url.scheme == 'https'
         https.use_ssl = url.scheme=='https'
-        https.verify_mode = OpenSSL::SSL::VERIFY_PEER
+        https.verify_mode = ssl_verify_mode
         https.ca_file = File.join(File.dirname(__FILE__), "cacert.pem")
       end
 
@@ -71,11 +72,12 @@ module CnpOnline
       url = URI.parse(request_url)
       logger = initialize_logger(config_hash)
       http_response = nil
+      ssl_verify_mode = config_hash['ssl_verify_mode'] || OpenSSL::SSL::VERIFY_PEER
 
       https = Net::HTTP.new(url.host, url.port, proxy_addr, proxy_port)
       if url.scheme == 'https'
         https.use_ssl = url.scheme=='https'
-        https.verify_mode = OpenSSL::SSL::VERIFY_PEER
+        https.verify_mode = ssl_verify_mode
         https.ca_file = File.join(File.dirname(__FILE__), "cacert.pem")
       end
 
@@ -100,11 +102,12 @@ module CnpOnline
       url = URI.parse(request_url)
       logger = initialize_logger(config_hash)
       http_response = nil
+      ssl_verify_mode = config_hash['ssl_verify_mode'] || OpenSSL::SSL::VERIFY_PEER
 
       https = Net::HTTP.new(url.host, url.port, proxy_addr, proxy_port)
       if url.scheme == 'https'
         https.use_ssl = url.scheme=='https'
-        https.verify_mode = OpenSSL::SSL::VERIFY_PEER
+        https.verify_mode = ssl_verify_mode
         https.ca_file = File.join(File.dirname(__FILE__), "cacert.pem")
       end
 
@@ -130,11 +133,12 @@ module CnpOnline
       url = URI.parse(request_url)
       logger = initialize_logger(config_hash)
       http_response = nil
+      ssl_verify_mode = config_hash['ssl_verify_mode'] || OpenSSL::SSL::VERIFY_PEER
 
       https = Net::HTTP.new(url.host, url.port, proxy_addr, proxy_port)
       if url.scheme == 'https'
         https.use_ssl = url.scheme=='https'
-        https.verify_mode = OpenSSL::SSL::VERIFY_PEER
+        https.verify_mode = ssl_verify_mode
         https.ca_file = File.join(File.dirname(__FILE__), "cacert.pem")
       end
 
@@ -160,11 +164,12 @@ module CnpOnline
       url = URI.parse(request_url)
       logger = initialize_logger(config_hash)
       http_response = nil
+      ssl_verify_mode = config_hash['ssl_verify_mode'] || OpenSSL::SSL::VERIFY_PEER
 
       https = Net::HTTP.new(url.host, url.port, proxy_addr, proxy_port)
       if url.scheme == 'https'
         https.use_ssl = url.scheme=='https'
-        https.verify_mode = OpenSSL::SSL::VERIFY_PEER
+        https.verify_mode = ssl_verify_mode
         https.ca_file = File.join(File.dirname(__FILE__), "cacert.pem")
       end
 
@@ -187,11 +192,12 @@ module CnpOnline
       url = URI.parse(request_url)
       logger = initialize_logger(config_hash)
       http_response = nil
+      ssl_verify_mode = config_hash['ssl_verify_mode'] || OpenSSL::SSL::VERIFY_PEER
 
       https = Net::HTTP.new(url.host, url.port, proxy_addr, proxy_port)
       if url.scheme == 'https'
         https.use_ssl = url.scheme=='https'
-        https.verify_mode = OpenSSL::SSL::VERIFY_PEER
+        https.verify_mode = ssl_verify_mode
         https.ca_file = File.join(File.dirname(__FILE__), "cacert.pem")
       end
 
@@ -215,11 +221,12 @@ module CnpOnline
       url = URI.parse(request_url)
       logger = initialize_logger(config_hash)
       http_response = nil
+      ssl_verify_mode = config_hash['ssl_verify_mode'] || OpenSSL::SSL::VERIFY_PEER
 
       https = Net::HTTP.new(url.host, url.port, proxy_addr, proxy_port)
       if url.scheme == 'https'
         https.use_ssl = url.scheme=='https'
-        https.verify_mode = OpenSSL::SSL::VERIFY_PEER
+        https.verify_mode = ssl_verify_mode
         https.ca_file = File.join(File.dirname(__FILE__), "cacert.pem")
       end
 
