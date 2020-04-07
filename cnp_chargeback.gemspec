@@ -6,7 +6,7 @@ require 'version'
 
 Gem::Specification.new do |spec|
   spec.name = 'CnpChargeback'
-  spec.version = CnpChargeback::VERSION
+  spec.version = '2.1'
   spec.authors = ['Micki Balder']
   spec.email = ['micki.balder@food52.com']
   spec.summary = 'Food52 Forked version of CnpChargeback from Vantiv/WorldPay'
