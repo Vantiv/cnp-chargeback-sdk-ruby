@@ -30,8 +30,8 @@ require_relative 'Configuration'
 module CnpChargeback
 
   class ChargebackDocument
-    def initialize
-      @config_hash = Configuration.new.config
+    def initialize(config_hash = {})
+      @config_hash = Configuration.new.config.merge(config_hash)
     end
 
     def retrieve_document(case_id:, document_id:, document_path:, config: @config_hash)

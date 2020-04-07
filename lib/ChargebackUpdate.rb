@@ -30,8 +30,8 @@ require_relative 'Configuration'
 module CnpChargeback
 
   class ChargebackUpdate
-    def initialize
-      @config_hash = Configuration.new.config
+    def initialize(config_hash = {})
+      @config_hash = Configuration.new.config.merge(config_hash)
     end
 
     def assign_case_to_user(case_id:, user_id:, note:, config: @config_hash)

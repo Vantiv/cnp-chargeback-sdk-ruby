@@ -30,8 +30,8 @@ require_relative 'Configuration'
 module CnpChargeback
 
   class ChargebackRetrieval
-    def initialize
-      @config_hash = Configuration.new.config
+    def initialize(config_hash = {})
+      @config_hash = Configuration.new.config.merge(config_hash)
     end
 
     def get_chargebacks_by_date(activity_date:, config: @config_hash)
