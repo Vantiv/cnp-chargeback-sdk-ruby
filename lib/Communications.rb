@@ -263,10 +263,9 @@ module CnpChargeback
 
     def self.write_document(http_response, document_path, config_hash)
       content_type = http_response.content_type
-      if content_type != "image/tiff"
-        raise ("Wrong response content type")
-      end
-    else
+      
+      raise ("Wrong response content type") if content_type != "image/tiff"
+
       open(document_path, "wb") do |file|
         file.write(http_response.body)
       end
