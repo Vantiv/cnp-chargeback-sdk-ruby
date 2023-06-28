@@ -203,6 +203,7 @@ module CnpChargeback
 
       req = Net::HTTP::Get.new(url, CHARGEBACK_API_HEADERS)
       req.basic_auth(config_hash['user'], config_hash['password'])
+      req = set_request_headers_host(req)
 
       logger.debug "GET request to: " + url.to_s + "\n"
 
@@ -296,6 +297,18 @@ module CnpChargeback
       logger.formatter = proc { |severity, datetime, progname, msg| "#{msg}\n" }
       logger
     end
+
+    def self.set_request_headers_host(req)
+      req_headers = req.instance_variable_get('@header')
+      if !Rails.env.production?
+        req_headers["host"] = ["services.vantivprelive.com:443"]
+      else
+        req_headers["host"] = ["services.vantivcnp.com:443"]
+      end
+      req.instance_variable_set('@header', req_headers)
+      req
+    end
+
   end
 end
 
